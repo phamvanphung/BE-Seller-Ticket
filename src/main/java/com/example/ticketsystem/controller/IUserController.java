@@ -1,6 +1,8 @@
 package com.example.ticketsystem.controller;
 
 import com.example.ticketsystem.dto.common.response.ApiResponse;
+import com.example.ticketsystem.dto.common.response.StatusResponse;
+import com.example.ticketsystem.dto.user.request.CheckOtpWhenRegisterRequest;
 import com.example.ticketsystem.dto.user.request.LoginRequest;
 import com.example.ticketsystem.dto.user.request.UserRegisterRequest;
 import com.example.ticketsystem.dto.user.response.TokenResponse;
@@ -41,6 +43,14 @@ public interface IUserController {
     )
     @GetMapping("/v1/getInfo")
     ResponseEntity<ApiResponse<UserResponse>> getInfo(Principal principal);
+
+
+
+    @Operation(
+        summary = "Verify OTP When Register"
+    )
+    @PostMapping("/v1/checkOtp/register")
+    ResponseEntity<ApiResponse<StatusResponse>> checkOtpWhenRegister(@RequestBody CheckOtpWhenRegisterRequest request);
 
 
 }

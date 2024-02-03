@@ -3,6 +3,8 @@ package com.example.ticketsystem.service;
 
 
 import com.example.ticketsystem.dto.common.response.ApiResponse;
+import com.example.ticketsystem.dto.common.response.StatusResponse;
+import com.example.ticketsystem.dto.user.request.CheckOtpWhenRegisterRequest;
 import com.example.ticketsystem.dto.user.request.LoginRequest;
 import com.example.ticketsystem.dto.user.request.UserRegisterRequest;
 import com.example.ticketsystem.dto.user.response.TokenResponse;
@@ -27,4 +29,6 @@ public interface IUserService {
     ApiResponse<UserResponse> getInfo(String email);
 
     User saverUser(User user);
+
+    ApiResponse<StatusResponse> checkOtpWhenRegister(CheckOtpWhenRegisterRequest request);
 }

@@ -2,6 +2,8 @@ package com.example.ticketsystem.controller.imlp;
 
 import com.example.ticketsystem.controller.IUserController;
 import com.example.ticketsystem.dto.common.response.ApiResponse;
+import com.example.ticketsystem.dto.common.response.StatusResponse;
+import com.example.ticketsystem.dto.user.request.CheckOtpWhenRegisterRequest;
 import com.example.ticketsystem.dto.user.request.LoginRequest;
 import com.example.ticketsystem.dto.user.request.UserRegisterRequest;
 import com.example.ticketsystem.dto.user.response.TokenResponse;
@@ -22,12 +24,19 @@ public class UserController implements IUserController {
     private IUserService userService;
 
 
+    // TODO: B1. Gui form dank ky.
     @Override
     public ResponseEntity<ApiResponse<UserResponse>> registerUser(UserRegisterRequest request) {
         ResponseEntity<ApiResponse<UserResponse>> userResponseApiResponse = userService.register(request);
         return userResponseApiResponse;
     }
 
+    //TODO: B2. Check OTP
+    @Override
+    public ResponseEntity<ApiResponse<StatusResponse>> checkOtpWhenRegister(CheckOtpWhenRegisterRequest request) {
+        ApiResponse<StatusResponse> checked = userService.checkOtpWhenRegister(request);
+        return new ResponseEntity<>(checked, HttpStatus.OK);
+    }
 
     @Override
     public ResponseEntity<ApiResponse<TokenResponse>> login(LoginRequest request) {

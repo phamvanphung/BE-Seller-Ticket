@@ -39,8 +39,9 @@ public class SpringSecurityConfig {
                         "/swagger-ui/**",
                         "/api-docs/**",
                         "/h2-console/**",
-                        "/user/**/register",
-                        "/user/**/login"
+                        "/user/*/register",
+                        "/user/*/login",
+                        "user/*/checkOtp/register"
                     ).permitAll()
                     .requestMatchers("/admin/**").hasAuthority("ADMIN")
                     .requestMatchers("/superadmin/**").hasAuthority("SUPERADMIN")

@@ -47,6 +47,7 @@ public class User implements Serializable , UserDetails {
     private boolean inactive;
     private boolean deleted;
     private boolean gender; // 0: MALE 1 FEMALE
+    private String otp;
 
 
 
