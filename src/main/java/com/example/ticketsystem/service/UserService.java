@@ -2,12 +2,12 @@ package com.example.ticketsystem.service;
 
 
 import com.example.ticketsystem.dto.common.response.ApiResponse;
+import com.example.ticketsystem.dto.common.response.PageDataResponse;
 import com.example.ticketsystem.dto.common.response.StatusResponse;
-import com.example.ticketsystem.dto.user.request.CheckOtpWhenRegisterRequest;
-import com.example.ticketsystem.dto.user.request.LoginRequest;
-import com.example.ticketsystem.dto.user.request.UserRegisterRequest;
+import com.example.ticketsystem.dto.user.request.*;
 import com.example.ticketsystem.dto.user.response.TokenResponse;
 import com.example.ticketsystem.dto.user.response.UserResponse;
+import com.example.ticketsystem.dto.user.response.UserSummaryResponse;
 import com.example.ticketsystem.entity.Role;
 import com.example.ticketsystem.entity.User;
 import com.example.ticketsystem.enums.ResponseCode;
@@ -21,9 +21,12 @@ import com.example.ticketsystem.utils.CommonUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,7 +35,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -189,6 +196,73 @@ public class UserService implements IUserService {
             log.error("Have error when check otp with email: {}", request.getEmail());
             throw new BusinessException(ResponseCode.USER_CHECK_OTP_FAILED);
         }
+    }
+
+
+    @Override
+    public UserResponse updateUserInfo(UserUpdateRequest request) {
+        try {
+            User userRequest = iUserRepository.findByEmail(getEmailRequest()).orElseThrow(
+                    () -> new BusinessException(ResponseCode.USER_NOT_FOUND)
+            );
+
+            User user = iUserRepository.findById(UUID.fromString(request.getId())).orElseThrow(
+                    () -> new BusinessException(ResponseCode.USER_NOT_FOUND)
+            );
+
+            if(!Objects.equals(userRequest.getEmail(), user.getEmail()) ){
+                throw new BusinessException(ResponseCode.USER_DO_NOT_PERMISSION);
+            }
+
+            if(StringUtils.isNoneBlank(request.getName())){
+                user.setName(request.getName());
+            }
+
+            if(StringUtils.isNoneBlank(request.getDob())){
+                user.setDob(LocalDateTime.parse(request.getDob(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            }
+
+            iUserRepository.save(user);
+            return new UserResponse(user);
+
+        } catch (BusinessException e){
+            throw e;
+        } catch (DateTimeException e ){
+            throw new BusinessException(ResponseCode.DATETIME_INVALID);
+        }
+        catch (Exception e) {
+            log.error("Have error : {}", e.getLocalizedMessage());
+            throw new BusinessException(ResponseCode.FAILED);
+        }
+    }
+
+    @Override
+    public PageDataResponse<UserSummaryResponse> getAllPage(UserGetPageRequest request) {
+        try {
+            Page<User> userPage = iUserRepository.findAll(request,request.getPageable());
+            return new PageDataResponse<UserSummaryResponse>()
+                    .setPage(userPage.getNumber())
+                    .setSize(userPage.getSize())
+                    .setTotalPage(userPage.getTotalPages())
+                    .setTotalSize(userPage.getTotalElements())
+                    .setItems(userPage.stream().map(UserSummaryResponse::new).collect(Collectors.toList()));
+        } catch (BusinessException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error("Have error : {}", e.getLocalizedMessage());
+            throw new BusinessException(ResponseCode.FAILED);
+        }
+    }
+
+
+
+    private String getEmailRequest(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            return currentUserName;
+        }
+        return "";
     }
 }
 

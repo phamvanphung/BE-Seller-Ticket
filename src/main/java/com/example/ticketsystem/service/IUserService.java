@@ -3,16 +3,17 @@ package com.example.ticketsystem.service;
 
 
 import com.example.ticketsystem.dto.common.response.ApiResponse;
+import com.example.ticketsystem.dto.common.response.PageDataResponse;
 import com.example.ticketsystem.dto.common.response.StatusResponse;
-import com.example.ticketsystem.dto.user.request.CheckOtpWhenRegisterRequest;
-import com.example.ticketsystem.dto.user.request.LoginRequest;
-import com.example.ticketsystem.dto.user.request.UserRegisterRequest;
+import com.example.ticketsystem.dto.user.request.*;
 import com.example.ticketsystem.dto.user.response.TokenResponse;
 import com.example.ticketsystem.dto.user.response.UserResponse;
+import com.example.ticketsystem.dto.user.response.UserSummaryResponse;
 import com.example.ticketsystem.entity.Role;
 import com.example.ticketsystem.entity.User;
 import com.example.ticketsystem.security.bussiness.dto.LoginDto;
 import com.example.ticketsystem.security.bussiness.dto.RegisterDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 
@@ -31,4 +32,9 @@ public interface IUserService {
     User saverUser(User user);
 
     ApiResponse<StatusResponse> checkOtpWhenRegister(CheckOtpWhenRegisterRequest request);
+
+
+    UserResponse updateUserInfo(UserUpdateRequest request);
+
+    PageDataResponse<UserSummaryResponse> getAllPage(UserGetPageRequest request);
 }
