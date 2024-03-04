@@ -14,10 +14,10 @@ public class GlobalException {
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public ApiResponse handleException(Exception ex) {
+    public ResponseEntity<?> handleException(Exception ex) {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.error(ex.getMessage());
-        return apiResponse;
+        return new ResponseEntity<>(apiResponse,HttpStatus.BAD_REQUEST);
     }
 
 

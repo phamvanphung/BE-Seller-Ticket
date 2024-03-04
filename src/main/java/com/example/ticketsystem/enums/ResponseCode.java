@@ -14,6 +14,10 @@ public enum ResponseCode {
     USER_EMAIL_OR_PASSWORD_INCORRECT(10004, "Username or password incorrect"),
     USER_DELETED_OR_INACTIVE(10005,"User deleted or inactive"),
     USER_CHECK_OTP_FAILED(10006,"OTP incorrect"),
+    USER_DO_NOT_PERMISSION(10007,"Do not permission"),
+
+
+    DATETIME_INVALID(101001,"Date time format invalid"),
 
     ;
 
