@@ -19,6 +19,12 @@ public enum ResponseCode {
 
     DATETIME_INVALID(101001,"Date time format invalid"),
 
+
+
+    FILM_EXISTED(102001,"Film existed"),
+    CREATE_FILM_FAILED(102002, "Create film failed"),
+    FILM_NOT_FOUND(102003,"Film not found"),
+    FILM_DELETED(102004,"Film deleted"),
     ;
 
     private int code;

@@ -41,7 +41,8 @@ public class SpringSecurityConfig {
                         "/h2-console/**",
                         "/user/*/register",
                         "/user/*/login",
-                        "user/*/checkOtp/register"
+                        "user/*/checkOtp/register",
+                            "/film/**"
                     ).permitAll()
                     .requestMatchers("/admin/**").hasAuthority("ADMIN")
                     .requestMatchers("/superadmin/**").hasAuthority("SUPERADMIN")

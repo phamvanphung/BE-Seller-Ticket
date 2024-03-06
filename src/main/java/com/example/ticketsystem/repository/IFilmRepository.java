@@ -1,5 +1,6 @@
 package com.example.ticketsystem.repository;
 
+import com.example.ticketsystem.entity.Film;
 import com.example.ticketsystem.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -9,15 +10,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface IUserRepository extends JpaRepository<User, UUID> , JpaSpecificationExecutor<User> {
+public interface IFilmRepository extends JpaRepository<Film, UUID>, JpaSpecificationExecutor<Film> {
 
-    Boolean existsByEmail(String email);
-    Optional<User> findByEmail(String email);
-    Optional<User> findByEmailAndDeleted(String email, boolean deleted);
+    Boolean existsByNameAndDeleted(String name,boolean deleted );
 
-    Boolean existsByEmailAndDeleted(String email,boolean deleted );
-
-
+    Optional<Film> findByName(String name);
 }
-
-

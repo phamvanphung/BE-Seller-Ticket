@@ -8,7 +8,7 @@ import com.example.ticketsystem.dto.user.request.*;
 import com.example.ticketsystem.dto.user.response.TokenResponse;
 import com.example.ticketsystem.dto.user.response.UserResponse;
 import com.example.ticketsystem.dto.user.response.UserSummaryResponse;
-import com.example.ticketsystem.entity.Role;
+import com.example.ticketsystem.enums.Role;
 import com.example.ticketsystem.entity.User;
 import com.example.ticketsystem.enums.ResponseCode;
 import com.example.ticketsystem.exception.BusinessException;
@@ -133,7 +133,8 @@ public class UserService implements IUserService {
                 )
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            User user = iUserRepository.findByEmailAndDeleted(authentication.getName(),false).orElseThrow(() -> new BusinessException(ResponseCode.USER_NOT_FOUND));
+            User user = iUserRepository.findByEmailAndDeleted(authentication.getName(),false).orElseThrow(
+                    () -> new BusinessException(ResponseCode.USER_NOT_FOUND));
             if (user.isDeleted() || user.isInactive()) {
                 throw new BusinessException(ResponseCode.USER_DELETED_OR_INACTIVE);
             }

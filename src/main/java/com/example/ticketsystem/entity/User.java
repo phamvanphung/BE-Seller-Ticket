@@ -1,11 +1,10 @@
 package com.example.ticketsystem.entity;
 
+import com.example.ticketsystem.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.JdbcType;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -55,7 +54,7 @@ public class User implements Serializable , UserDetails {
 
 
     //Un utilisateur peut avoir plusieurs roles
-    @ElementCollection(targetClass=Role.class) //  specify where JPA can find information about the Enum.
+    @ElementCollection(targetClass= Role.class) //  specify where JPA can find information about the Enum.
     @Enumerated(EnumType.STRING) // Possibly optional (I'm not sure) but defaults to ORDINAL.
     @CollectionTable(name="role_user") // create the table that hold relationship from Person to InterestsEnum
     @Column(name="roles") // Column name in person_interest

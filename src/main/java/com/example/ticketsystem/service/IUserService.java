@@ -9,11 +9,8 @@ import com.example.ticketsystem.dto.user.request.*;
 import com.example.ticketsystem.dto.user.response.TokenResponse;
 import com.example.ticketsystem.dto.user.response.UserResponse;
 import com.example.ticketsystem.dto.user.response.UserSummaryResponse;
-import com.example.ticketsystem.entity.Role;
 import com.example.ticketsystem.entity.User;
 import com.example.ticketsystem.security.bussiness.dto.LoginDto;
-import com.example.ticketsystem.security.bussiness.dto.RegisterDto;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 

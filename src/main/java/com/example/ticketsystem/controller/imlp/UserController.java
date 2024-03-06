@@ -13,6 +13,7 @@ import com.example.ticketsystem.dto.user.response.UserResponse;
 import com.example.ticketsystem.dto.user.response.UserSummaryResponse;
 import com.example.ticketsystem.enums.ResponseCode;
 import com.example.ticketsystem.service.IUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +23,12 @@ import java.security.Principal;
 import java.util.Objects;
 
 @RestController
+@Slf4j
 public class UserController implements IUserController {
 
 
     @Autowired
     private IUserService userService;
-
 
     // TODO: B1. Gui form dank ky.
     @Override
@@ -45,6 +46,7 @@ public class UserController implements IUserController {
 
     @Override
     public ResponseEntity<ApiResponse<TokenResponse>> login(LoginRequest request) {
+        log.info("has a request to login:{}", request.toString());
         ApiResponse<TokenResponse> loginResponse = userService.login(request);
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }

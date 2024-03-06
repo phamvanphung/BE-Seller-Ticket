@@ -9,6 +9,6 @@ import lombok.ToString;
 @ToString
 public class LoginRequest {
     private String email;
-    @ToString.Exclude
+    //@ToString.Exclude //ẩn pass
     private String password;
 }

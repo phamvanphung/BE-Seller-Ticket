@@ -1,6 +1,6 @@
 package com.example.ticketsystem.dto.user.response;
 
-import com.example.ticketsystem.entity.Role;
+import com.example.ticketsystem.enums.Role;
 import com.example.ticketsystem.entity.User;
 import lombok.Getter;
 import lombok.Setter;
