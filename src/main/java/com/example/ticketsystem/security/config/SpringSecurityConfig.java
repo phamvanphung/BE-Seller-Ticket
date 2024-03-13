@@ -42,7 +42,8 @@ public class SpringSecurityConfig {
                         "/user/*/register",
                         "/user/*/login",
                         "user/*/checkOtp/register",
-                            "/film/**"
+                            "/film/**",
+                            "/file/**"
                     ).permitAll()
                     .requestMatchers("/admin/**").hasAuthority("ADMIN")
                     .requestMatchers("/superadmin/**").hasAuthority("SUPERADMIN")

@@ -36,4 +36,11 @@ public enum ResponseCode {
     }
 
 
+    public int getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

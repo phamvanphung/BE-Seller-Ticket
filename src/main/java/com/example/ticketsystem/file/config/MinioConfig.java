@@ -15,14 +15,14 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class MinioConfig {
-    public MinioClient minioClient;
+    public  static MinioClient minioClient;
 
     @Bean(name = "config-minio")
     public String config(){
         try {
             minioClient =
                     MinioClient.builder()
-                            .endpoint("https://minio-ui.fucota.com")
+                            .endpoint("157.10.52.152:9000")
                             .credentials("JmrxfenmEU6iQ1tpAoCe", "x03xRLMVoV2H0zz2EhzMC2BN6ZoWVvbMTPEHpUVA")
                             .build();
             log.info("config minio success");
