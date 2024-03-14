@@ -22,14 +22,14 @@ public class FilmController implements IFilmController {
     @Autowired
     private IFilmService iFilmService;
     @Override
-    public ResponseEntity<ApiResponse<FilmResponse>> createFilm(String token, CreateFilmRequest request) {
+    public ResponseEntity<ApiResponse<FilmResponse>> createFilm(Principal principal, CreateFilmRequest request) {
         log.info("Has request with data{}", request.toString());
         ResponseEntity<ApiResponse<FilmResponse>> filmResponse = iFilmService.createFilm(request);
         return filmResponse;
     }
 
     @Override
-    public ResponseEntity<ApiResponse<FilmResponse>> getFilm(String token, String name) {
+    public ResponseEntity<ApiResponse<FilmResponse>> getFilm(Principal principal, String name) {
         log.info("Has request with data{}", name);
         ResponseEntity<ApiResponse<FilmResponse>> filmDetail = iFilmService.getFilm(name);
         return filmDetail;

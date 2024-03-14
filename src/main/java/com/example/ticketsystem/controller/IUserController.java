@@ -3,15 +3,13 @@ package com.example.ticketsystem.controller;
 import com.example.ticketsystem.dto.common.response.ApiResponse;
 import com.example.ticketsystem.dto.common.response.PageDataResponse;
 import com.example.ticketsystem.dto.common.response.StatusResponse;
-import com.example.ticketsystem.dto.user.request.CheckOtpWhenRegisterRequest;
-import com.example.ticketsystem.dto.user.request.LoginRequest;
-import com.example.ticketsystem.dto.user.request.UserRegisterRequest;
-import com.example.ticketsystem.dto.user.request.UserUpdateRequest;
+import com.example.ticketsystem.dto.user.request.*;
 import com.example.ticketsystem.dto.user.response.TokenResponse;
 import com.example.ticketsystem.dto.user.response.UserResponse;
 import com.example.ticketsystem.dto.user.response.UserSummaryResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,5 +63,6 @@ public interface IUserController {
             summary = "Admin list all user"
     )
     @GetMapping("/v1/all")
-    ResponseEntity<ApiResponse<PageDataResponse<UserSummaryResponse>>> getPageAll(Principal principal);
+    ResponseEntity<ApiResponse<PageDataResponse<UserSummaryResponse>>> getPageAll(Principal principal,
+                                                     @ParameterObject UserGetPageRequest request);
 }

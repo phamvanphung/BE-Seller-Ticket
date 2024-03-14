@@ -50,11 +50,14 @@ public class User implements Serializable , UserDetails {
     private boolean gender; // 0: MALE 1 FEMALE
     private String otp;
 
+    @Column
+    private String createdAt;
+
 
 
 
     //Un utilisateur peut avoir plusieurs roles
-    @ElementCollection(targetClass= Role.class) //  specify where JPA can find information about the Enum.
+    @ElementCollection(targetClass=Role.class,fetch = FetchType.EAGER)  //  specify where JPA can find information about the Enum.
     @Enumerated(EnumType.STRING) // Possibly optional (I'm not sure) but defaults to ORDINAL.
     @CollectionTable(name="role_user") // create the table that hold relationship from Person to InterestsEnum
     @Column(name="roles") // Column name in person_interest

@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.Root;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,15 +24,17 @@ public class UserGetPageRequest implements Specification<User> {
     private String keyword;
     private Integer size = 10;
     private Integer page = 0;
-    private String orderBy = "createdAt";
+    private String orderBy = "id";
     private Sort.Direction direction = Sort.Direction.ASC;
 
     @Override
     public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicateList = new ArrayList<>();
-        if (!keyword.isBlank()) {
+        if (StringUtils.isNotBlank(keyword)) {
             keyword = "%" + keyword + "%";
-            predicateList.add(criteriaBuilder.or(criteriaBuilder.like(root.get(User.Fields.id), keyword), criteriaBuilder.like(root.get(User.Fields.name), keyword), criteriaBuilder.like(root.get(User.Fields.email), keyword)));
+            predicateList.add(criteriaBuilder.or(
+                    criteriaBuilder.like(root.get(User.Fields.name), keyword),
+                    criteriaBuilder.like(root.get(User.Fields.email), keyword)));
         }
         return criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()]));
     }

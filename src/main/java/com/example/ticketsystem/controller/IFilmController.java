@@ -20,12 +20,12 @@ public interface IFilmController {
 
     @PostMapping("/v1/create")
     ResponseEntity<ApiResponse<FilmResponse>> createFilm(@Valid
-                                                         @RequestHeader("Authorization") String token,
+                                                         Principal principal,
                                                          @RequestBody CreateFilmRequest request);
 
     @GetMapping("/v1/get/{name}")
     ResponseEntity<ApiResponse<FilmResponse>> getFilm(@Valid
-                                                      @RequestHeader("Authorization") String token,
+                                                      Principal principal,
                                                       @PathVariable(name = "name", required = true)
                                                       String name);
     @PutMapping("/v1/update/{name}")
