@@ -62,9 +62,11 @@ public class UserController implements IUserController {
         UserResponse userResponse = userService.updateUserInfo(request);
         return new ResponseEntity<>(new ApiResponse<>(ResponseCode.SUCCESS,userResponse),HttpStatus.OK);
     }
-
+    
     @Override
-    public ResponseEntity<ApiResponse<PageDataResponse<UserSummaryResponse>>> getPageAll(Principal principal) {
-        return null;
+    public ResponseEntity<ApiResponse<PageDataResponse<UserSummaryResponse>>> getPageAll(Principal principal, UserGetPageRequest request) {
+        log.info("has a request with data:{}", request.toString());
+        PageDataResponse<UserSummaryResponse> userSummaryResponse = userService.getAllPage(request);
+        return new ResponseEntity<>(new ApiResponse<>(ResponseCode.SUCCESS,userSummaryResponse),HttpStatus.OK);
     }
 }

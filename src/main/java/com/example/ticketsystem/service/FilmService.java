@@ -1,9 +1,12 @@
 package com.example.ticketsystem.service;
 
 import com.example.ticketsystem.dto.common.response.ApiResponse;
+import com.example.ticketsystem.dto.common.response.PageDataResponse;
 import com.example.ticketsystem.dto.film.request.CreateFilmRequest;
+import com.example.ticketsystem.dto.film.request.GetAllFilmRequest;
 import com.example.ticketsystem.dto.film.request.UpdateFilmRequest;
 import com.example.ticketsystem.dto.film.response.FilmResponse;
+import com.example.ticketsystem.dto.film.response.FilmSummaryResponse;
 import com.example.ticketsystem.entity.Film;
 import com.example.ticketsystem.enums.ResponseCode;
 import com.example.ticketsystem.exception.BusinessException;
@@ -143,5 +146,10 @@ public class FilmService implements IFilmService {
             e.printStackTrace();
             throw new BusinessException(ResponseCode.FAILED);
         }
+    }
+
+    @Override
+    public PageDataResponse<FilmSummaryResponse> getAllFilm(GetAllFilmRequest request) {
+        return null;
     }
 }
