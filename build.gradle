@@ -56,6 +56,11 @@ dependencies {
     implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '3.3.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
+
+
+    /* Minio */
+    implementation("io.minio:minio:8.5.9")
+
 }
 
 tasks.named('test') {

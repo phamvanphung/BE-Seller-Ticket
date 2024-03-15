@@ -41,12 +41,12 @@ public class SpringSecurityConfig {
                         "/h2-console/**",
                         "/user/*/register",
                         "/user/*/login",
-                        "user/*/checkOtp/register"
-                            //"/film/**"
+                        "user/*/checkOtp/register",
+                            "/film/**",
+                            "/file/**"
                     ).permitAll()
                     .requestMatchers("/admin/**").hasAuthority("ADMIN")
                     .requestMatchers("/superadmin/**").hasAuthority("SUPERADMIN")
-                        .requestMatchers("/film/**").hasAuthority("USER")
                     .anyRequest().authenticated()
             );
 
