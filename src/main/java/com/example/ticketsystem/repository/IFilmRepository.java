@@ -12,7 +12,7 @@ import java.util.UUID;
 @Repository
 public interface IFilmRepository extends JpaRepository<Film, UUID>, JpaSpecificationExecutor<Film> {
 
-    Boolean existsByNameAndDeleted(String name,boolean deleted );
+    Boolean existsByName(String name);
 
     Optional<Film> findByName(String name);
 }

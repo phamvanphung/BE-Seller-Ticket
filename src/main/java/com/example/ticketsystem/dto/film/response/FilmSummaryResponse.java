@@ -20,7 +20,6 @@ public class FilmSummaryResponse {
     private TypeFilm typeFilm;
     private LocalDateTime beginDate;
     private Long price;
-    private Boolean deleted;
 
     public FilmSummaryResponse(Film film){
         this.id = film.getId();
@@ -28,6 +27,5 @@ public class FilmSummaryResponse {
         this.typeFilm = film.getTypeFilm();
         this.beginDate = film.getBeginDate();
         this.price = film.getPrice();
-        this.deleted = film.getDeleted();
     }
 }

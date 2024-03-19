@@ -2,15 +2,20 @@ package com.example.ticketsystem.service;
 
 import com.example.ticketsystem.dto.common.response.ApiResponse;
 import com.example.ticketsystem.dto.common.response.PageDataResponse;
+import com.example.ticketsystem.dto.common.response.StatusResponse;
 import com.example.ticketsystem.dto.film.request.CreateFilmRequest;
 import com.example.ticketsystem.dto.film.request.GetAllFilmRequest;
+import com.example.ticketsystem.dto.film.request.RatingFilmRequest;
 import com.example.ticketsystem.dto.film.request.UpdateFilmRequest;
 import com.example.ticketsystem.dto.film.response.FilmResponse;
 import com.example.ticketsystem.dto.film.response.FilmSummaryResponse;
 import com.example.ticketsystem.entity.Film;
+import com.example.ticketsystem.entity.User;
 import com.example.ticketsystem.enums.ResponseCode;
+import com.example.ticketsystem.enums.Role;
 import com.example.ticketsystem.exception.BusinessException;
 import com.example.ticketsystem.repository.IFilmRepository;
+import com.example.ticketsystem.repository.IUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +37,12 @@ public class FilmService implements IFilmService {
 
 
     private final IFilmRepository iFilmRepository;
+    private final IUserRepository iUserRepository;
 
     @Override
     public ResponseEntity<ApiResponse<FilmResponse>> createFilm(CreateFilmRequest request) {
         try {
-            if (iFilmRepository.existsByNameAndDeleted(request.getName(), false)) {
+            if (iFilmRepository.existsByName(request.getName())) {
                 throw new BusinessException(ResponseCode.FILM_EXISTED);
             } else {
                 Film film = new Film();
@@ -50,7 +56,6 @@ public class FilmService implements IFilmService {
                 film.setPrice(request.getPrice());
                 film.setTime(request.getTime());
                 film.setRate(0.0);
-                film.setDeleted(false);
 
                 //throw new NullPointerException();
                 film = iFilmRepository.save(film);
@@ -74,9 +79,6 @@ public class FilmService implements IFilmService {
                         throw new BusinessException(ResponseCode.FILM_NOT_FOUND);
                     }
             );
-            if (film.getDeleted()) {
-                throw new BusinessException(ResponseCode.FILM_DELETED);
-            }
 
             return new ResponseEntity<ApiResponse<FilmResponse>>(new ApiResponse<>(ResponseCode.SUCCESS, new FilmResponse(film)), HttpStatus.OK);
         } catch (BusinessException e) {
@@ -131,9 +133,6 @@ public class FilmService implements IFilmService {
             if (request.getRate() != null) {
                 film.setRate(request.getRate());
             }
-            if (request.getDeleted() != null) {
-                film.setDeleted(request.getDeleted());
-            }
             if (request.getPrice() != null) {
                 film.setPrice(request.getPrice());
             }
@@ -149,7 +148,65 @@ public class FilmService implements IFilmService {
     }
 
     @Override
+    public ResponseEntity<ApiResponse<StatusResponse>> deleteFilm(String name, String email) {
+        try {
+            User user = iUserRepository.findByEmail(email).orElseThrow(
+                    () -> {
+                        throw new BusinessException(ResponseCode.USER_NOT_FOUND);
+                    }
+            );
+            //log.info("userRole:{}", user.getRoles());
+            //log.info("role:{}", Role.ADMIN.name());
+            if(!user.getRoles().contains(Role.ADMIN)){
+                throw new BusinessException(ResponseCode.USER_DO_NOT_PERMISSION);
+            }
+
+            Film film = iFilmRepository.findByName(name).orElseThrow(
+                    () -> {
+                        throw new BusinessException(ResponseCode.FILM_NOT_FOUND);
+                    }
+            );
+            iFilmRepository.delete(film);
+            return new ResponseEntity<ApiResponse<StatusResponse>>(new ApiResponse<>(ResponseCode.SUCCESS, new StatusResponse(true)), HttpStatus.OK);
+
+        }catch (BusinessException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BusinessException(ResponseCode.FAILED);
+        }
+    }
+
+
+    @Override
     public PageDataResponse<FilmSummaryResponse> getAllFilm(GetAllFilmRequest request) {
         return null;
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<StatusResponse>> ratingFilm(RatingFilmRequest request) {
+        try {
+            Film film = iFilmRepository.findByName(request.getName()).orElseThrow(
+                    () -> {
+                        throw new BusinessException(ResponseCode.FILM_NOT_FOUND);
+                    }
+            );
+            film.setSumRate(film.getSumRate()+ request.getRate());
+            film.setCountRate(film.getCountRate()+1);
+
+            Double rate = film.getSumRate()*1.0/ film.getCountRate();
+            log.info("rate:{}", rate);
+            rate = (double) Math.round(rate * 10 / 10); //lam tron so
+            film.setRate(rate);
+            iFilmRepository.save(film);
+
+            return new ResponseEntity<ApiResponse<StatusResponse>>(new ApiResponse<>(ResponseCode.SUCCESS, new StatusResponse(true)), HttpStatus.OK);
+
+        }catch (BusinessException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BusinessException(ResponseCode.FAILED);
+        }
     }
 }

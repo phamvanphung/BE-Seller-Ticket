@@ -45,7 +45,9 @@ public class SpringSecurityConfig {
                             "/film/**",
                             "/file/**"
                     ).permitAll()
-                    .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                    .requestMatchers("/admin/**",
+                            "/film/*/delete/**"
+                    ).hasAuthority("ADMIN")
                     .requestMatchers("/superadmin/**").hasAuthority("SUPERADMIN")
                     .anyRequest().authenticated()
             );

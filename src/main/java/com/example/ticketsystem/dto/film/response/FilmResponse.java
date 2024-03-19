@@ -26,7 +26,6 @@ public class FilmResponse {
     private String description;
     private Country country;
     private Double rate;
-    private Boolean deleted;
     private Long price;
 
     public FilmResponse(Film film){
@@ -40,7 +39,6 @@ public class FilmResponse {
         this.description = film.getDescription();
         this.country = film.getCountry();
         this.rate = film.getRate();
-        this.deleted = film.getDeleted();
         this.price = film.getPrice();
     }
 }

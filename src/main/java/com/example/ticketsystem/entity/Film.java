@@ -46,15 +46,25 @@ public class Film {
 
     @Column(name = "description")
     private String description;
+
     @Column(name = "country")
     @Enumerated(EnumType.STRING) // Possibly optional (I'm not sure) but defaults to ORDINAL.
     private Country country;
-    @Column(name = "rate")
+
+    @Column(name = "rate", scale=2)
     private Double rate;
-    @Column(name = "deleted")
-    private Boolean deleted;
+
+    @Column(name = "sum_rate")
+    private Long sumRate = 0L;
+
+    @Column(name = "count_rate")
+    private int countRate = 0;
+
+//    @Column(name = "deleted")
+//    private Boolean deleted;
     @Column(name = "price")
     private Long price;
+
 
 
 }

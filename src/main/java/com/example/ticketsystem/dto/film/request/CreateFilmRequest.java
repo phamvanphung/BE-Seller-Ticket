@@ -41,13 +41,6 @@ public class CreateFilmRequest {
     private Country country;
 
     @NotNull
-    @PositiveOrZero
-    private Double rate;
-
-    @NotNull
-    private Boolean deleted;
-
-    @NotNull
     @Positive
     private Long price;
 

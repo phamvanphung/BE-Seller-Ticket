@@ -2,8 +2,10 @@ package com.example.ticketsystem.service;
 
 import com.example.ticketsystem.dto.common.response.ApiResponse;
 import com.example.ticketsystem.dto.common.response.PageDataResponse;
+import com.example.ticketsystem.dto.common.response.StatusResponse;
 import com.example.ticketsystem.dto.film.request.CreateFilmRequest;
 import com.example.ticketsystem.dto.film.request.GetAllFilmRequest;
+import com.example.ticketsystem.dto.film.request.RatingFilmRequest;
 import com.example.ticketsystem.dto.film.request.UpdateFilmRequest;
 import com.example.ticketsystem.dto.film.response.FilmResponse;
 import com.example.ticketsystem.dto.film.response.FilmSummaryResponse;
@@ -18,6 +20,11 @@ public interface IFilmService {
     ResponseEntity<ApiResponse<FilmResponse>> getFilm(String name);
 
     ResponseEntity<ApiResponse<FilmResponse>> updateFilm(String name, UpdateFilmRequest request);
+
+    ResponseEntity<ApiResponse<StatusResponse>> deleteFilm(String name, String email);
+
+    ResponseEntity<ApiResponse<StatusResponse>> ratingFilm(RatingFilmRequest request);
+
 
     PageDataResponse<FilmSummaryResponse> getAllFilm(GetAllFilmRequest request);
 }

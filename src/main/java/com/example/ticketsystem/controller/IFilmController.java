@@ -1,7 +1,9 @@
 package com.example.ticketsystem.controller;
 
 import com.example.ticketsystem.dto.common.response.ApiResponse;
+import com.example.ticketsystem.dto.common.response.StatusResponse;
 import com.example.ticketsystem.dto.film.request.CreateFilmRequest;
+import com.example.ticketsystem.dto.film.request.RatingFilmRequest;
 import com.example.ticketsystem.dto.film.request.UpdateFilmRequest;
 import com.example.ticketsystem.dto.film.response.FilmResponse;
 
@@ -33,4 +35,14 @@ public interface IFilmController {
                                                          @PathVariable(name = "name") String name,
                                                          @RequestBody UpdateFilmRequest request);
 
+    @DeleteMapping("/v1/delete/{name}")
+    ResponseEntity<ApiResponse<StatusResponse>> deleteFilm(@Valid
+                                                      Principal principal,
+                                                           @PathVariable(name = "name", required = true)
+                                                      String name);
+
+    @PostMapping("/v1/rating")
+    ResponseEntity<ApiResponse<StatusResponse>> ratingFilm(@Valid
+                                                           Principal principal,
+                                                           @RequestBody RatingFilmRequest request);
 }

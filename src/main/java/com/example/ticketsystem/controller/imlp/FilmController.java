@@ -2,7 +2,9 @@ package com.example.ticketsystem.controller.imlp;
 
 import com.example.ticketsystem.controller.IFilmController;
 import com.example.ticketsystem.dto.common.response.ApiResponse;
+import com.example.ticketsystem.dto.common.response.StatusResponse;
 import com.example.ticketsystem.dto.film.request.CreateFilmRequest;
+import com.example.ticketsystem.dto.film.request.RatingFilmRequest;
 import com.example.ticketsystem.dto.film.request.UpdateFilmRequest;
 import com.example.ticketsystem.dto.film.response.FilmResponse;
 import com.example.ticketsystem.dto.user.response.UserResponse;
@@ -40,5 +42,19 @@ public class FilmController implements IFilmController {
         log.info("Update film with data:{}", request.toString());
         ResponseEntity<ApiResponse<FilmResponse>> filmUpdate = iFilmService.updateFilm(name, request);
         return filmUpdate;
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<StatusResponse>> deleteFilm(Principal principal, String name) {
+        log.info("Delete film with name:{}", name);
+        ResponseEntity<ApiResponse<StatusResponse>> deleteFilm = iFilmService.deleteFilm(name, principal.getName());
+        return deleteFilm;
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<StatusResponse>> ratingFilm(Principal principal, RatingFilmRequest request) {
+        log.info("Rating film with name:{}", request.getName());
+        ResponseEntity<ApiResponse<StatusResponse>> ratingFilm = iFilmService.ratingFilm(request);
+        return ratingFilm;
     }
 }
