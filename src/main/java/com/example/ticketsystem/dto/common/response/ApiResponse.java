@@ -29,4 +29,12 @@ public class ApiResponse <T>{
         return this;
     }
 
+
+    public ApiResponse<T> ok(T data){
+        this.setCode(ResponseCode.SUCCESS.getCode());
+        this.setMessage(ResponseCode.SUCCESS.getMessage());
+        this.setData(data);
+        return this;
+    }
+
 }

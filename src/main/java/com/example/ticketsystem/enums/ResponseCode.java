@@ -25,6 +25,17 @@ public enum ResponseCode {
     CREATE_FILM_FAILED(102002, "Create film failed"),
     FILM_NOT_FOUND(102003,"Film not found"),
     FILM_DELETED(102004,"Film deleted"),
+
+
+
+
+    FILE_UPLOAD_FAILED(10101,"File upload failed"),
+    FILE_NOT_FOUND(10102,"File not found"),
+    FILE_GET_ERROR(10103, "File get Error"),
+    FILE_MINIO_ERROR(10104,"Minio error"),
+
+
+
     ;
 
     private int code;
