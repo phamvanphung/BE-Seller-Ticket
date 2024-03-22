@@ -1,4 +1,4 @@
-package com.example.ticketsystem.service;
+package com.example.ticketsystem.service.impl;
 
 import com.example.ticketsystem.dto.common.response.ApiResponse;
 import com.example.ticketsystem.dto.common.response.PageDataResponse;
@@ -9,6 +9,7 @@ import com.example.ticketsystem.dto.film.request.RatingFilmRequest;
 import com.example.ticketsystem.dto.film.request.UpdateFilmRequest;
 import com.example.ticketsystem.dto.film.response.FilmResponse;
 import com.example.ticketsystem.dto.film.response.FilmSummaryResponse;
+import com.example.ticketsystem.dto.user.response.UserSummaryResponse;
 import com.example.ticketsystem.entity.Film;
 import com.example.ticketsystem.entity.User;
 import com.example.ticketsystem.enums.ResponseCode;
@@ -16,10 +17,12 @@ import com.example.ticketsystem.enums.Role;
 import com.example.ticketsystem.exception.BusinessException;
 import com.example.ticketsystem.repository.IFilmRepository;
 import com.example.ticketsystem.repository.IUserRepository;
+import com.example.ticketsystem.service.IFilmService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -79,7 +83,6 @@ public class FilmService implements IFilmService {
                         throw new BusinessException(ResponseCode.FILM_NOT_FOUND);
                     }
             );
-
             return new ResponseEntity<ApiResponse<FilmResponse>>(new ApiResponse<>(ResponseCode.SUCCESS, new FilmResponse(film)), HttpStatus.OK);
         } catch (BusinessException e) {
             throw e;
@@ -180,12 +183,28 @@ public class FilmService implements IFilmService {
 
     @Override
     public PageDataResponse<FilmSummaryResponse> getAllFilm(GetAllFilmRequest request) {
-        return null;
+        try {
+            Page<Film> filmPage = iFilmRepository.findAll(request,request.getPageable());
+            return new PageDataResponse<FilmSummaryResponse>()
+                    .setPage(filmPage.getNumber())
+                    .setSize(filmPage.getSize())
+                    .setTotalPage(filmPage.getTotalPages())
+                    .setTotalSize(filmPage.getTotalElements())
+                    .setItems(filmPage.stream().map(FilmSummaryResponse::new).collect(Collectors.toList()));
+        } catch (BusinessException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error("Have error : {}", e.getLocalizedMessage());
+            throw new BusinessException(ResponseCode.FAILED);
+        }
     }
 
     @Override
     public ResponseEntity<ApiResponse<StatusResponse>> ratingFilm(RatingFilmRequest request) {
         try {
+            if(request.getRate()<-1 || request.getRate()>5){
+                throw new BusinessException(ResponseCode.WRONG_RATING);
+            }
             Film film = iFilmRepository.findByName(request.getName()).orElseThrow(
                     () -> {
                         throw new BusinessException(ResponseCode.FILM_NOT_FOUND);
@@ -196,8 +215,14 @@ public class FilmService implements IFilmService {
 
             Double rate = film.getSumRate()*1.0/ film.getCountRate();
             log.info("rate:{}", rate);
-            rate = (double) Math.round(rate * 10 / 10); //lam tron so
-            film.setRate(rate);
+
+            //rate = (double) Math.round(rate * 10 / 10); //lam tron so
+            //log.info("lam tron so:{}", rate);
+            //lam tron so
+            double roundedRate = Math.round(rate * 10.0) / 10.0; // Làm tròn tới chữ số thập phân thứ nhất
+            log.info("roundedRate: {}", roundedRate);
+
+            film.setRate(roundedRate);
             iFilmRepository.save(film);
 
             return new ResponseEntity<ApiResponse<StatusResponse>>(new ApiResponse<>(ResponseCode.SUCCESS, new StatusResponse(true)), HttpStatus.OK);

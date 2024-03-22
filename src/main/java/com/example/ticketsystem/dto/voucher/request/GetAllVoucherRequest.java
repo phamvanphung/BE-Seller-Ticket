@@ -1,13 +1,13 @@
-package com.example.ticketsystem.dto.user.request;
+package com.example.ticketsystem.dto.voucher.request;
 
+import com.example.ticketsystem.entity.Film;
 import com.example.ticketsystem.entity.User;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import com.example.ticketsystem.entity.Voucher;
+import jakarta.persistence.criteria.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,25 +21,31 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class UserGetPageRequest implements Specification<User> {
+@Slf4j
+public class GetAllVoucherRequest implements Specification<Voucher> {
     private String keyword;
-    private Boolean inactive;
+    private Boolean used;
     private Integer size = 10;
     private Integer page = 0;
     private String orderBy = "id";
     private Sort.Direction direction = Sort.Direction.ASC;
 
     @Override
-    public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+    public Predicate toPredicate(Root<Voucher> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicateList = new ArrayList<>();
         if (StringUtils.isNotBlank(keyword)) {
             keyword = "%" + keyword + "%";
+            Join<Voucher, User> userJoin = root.join(Voucher.Fields.user); // Join với entity User
+
             predicateList.add(criteriaBuilder.or(
-                    criteriaBuilder.like(root.get(User.Fields.name), keyword),
-                    criteriaBuilder.like(root.get(User.Fields.email), keyword)));
+                    criteriaBuilder.like(root.get(Voucher.Fields.discount).as(String.class), keyword),
+                    criteriaBuilder.like(userJoin.get(User.Fields.name), keyword),
+                    criteriaBuilder.like(userJoin.get(User.Fields.email), keyword)
+
+            ));
         }
-        if(Objects.nonNull(inactive)){
-            predicateList.add(criteriaBuilder.equal(root.get(User.Fields.inactive), inactive));
+        if(Objects.nonNull(used)){
+            predicateList.add(criteriaBuilder.equal(root.get(Voucher.Fields.used), used));
         }
         return criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()]));
     }

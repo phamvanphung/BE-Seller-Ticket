@@ -9,23 +9,22 @@ import com.example.ticketsystem.dto.film.request.RatingFilmRequest;
 import com.example.ticketsystem.dto.film.request.UpdateFilmRequest;
 import com.example.ticketsystem.dto.film.response.FilmResponse;
 import com.example.ticketsystem.dto.film.response.FilmSummaryResponse;
-import com.example.ticketsystem.dto.user.request.UserRegisterRequest;
-import com.example.ticketsystem.dto.user.response.UserResponse;
 import com.example.ticketsystem.dto.voucher.request.CreateVoucherRequest;
+import com.example.ticketsystem.dto.voucher.request.GetAllVoucherRequest;
+import com.example.ticketsystem.dto.voucher.request.UpdateVoucherRequest;
+import com.example.ticketsystem.dto.voucher.response.VoucherResponse;
 import org.springframework.http.ResponseEntity;
 
-public interface IFilmService {
+public interface IVoucherService {
+    ResponseEntity<ApiResponse<VoucherResponse>> createVoucher(CreateVoucherRequest request);
 
-    ResponseEntity<ApiResponse<FilmResponse>> createFilm(CreateFilmRequest request);
+    ResponseEntity<ApiResponse<VoucherResponse>> updateVoucher(UpdateVoucherRequest request);
 
-    ResponseEntity<ApiResponse<FilmResponse>> getFilm(String name);
+    ResponseEntity<ApiResponse<VoucherResponse>> getVoucher(String code);
 
-    ResponseEntity<ApiResponse<FilmResponse>> updateFilm(String name, UpdateFilmRequest request);
+    PageDataResponse<VoucherResponse> getAllVoucher(GetAllVoucherRequest request);
 
-    ResponseEntity<ApiResponse<StatusResponse>> deleteFilm(String name, String email);
-
-    ResponseEntity<ApiResponse<StatusResponse>> ratingFilm(RatingFilmRequest request);
+    ResponseEntity<ApiResponse<StatusResponse>> deleteVoucher(String name, String email);
 
 
-    PageDataResponse<FilmSummaryResponse> getAllFilm(GetAllFilmRequest request);
 }

@@ -25,6 +25,10 @@ public enum ResponseCode {
     CREATE_FILM_FAILED(102002, "Create film failed"),
     FILM_NOT_FOUND(102003,"Film not found"),
     FILM_DELETED(102004,"Film deleted"),
+
+    WRONG_RATING(200001, "Rating from 1 - 5"),
+
+    VOUCHER_NOT_FOUND(300001,"Voucher not found"),
     ;
 
     private int code;

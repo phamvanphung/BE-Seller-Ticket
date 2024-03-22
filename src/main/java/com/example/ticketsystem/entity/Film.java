@@ -25,21 +25,23 @@ public class Film {
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcType(VarcharJdbcType.class)
     private UUID id ;
+
     @Column(name = "image")
     private String image;
+
     @Column(name = "name")
-
     private String name;
-    @Column(name = "type_film")
 
+    @Column(name = "type_film")
     @Enumerated(EnumType.STRING) // Possibly optional (I'm not sure) but defaults to ORDINAL.
     private TypeFilm typeFilm;
+
     @Column(name = "time")
-
     private Integer time; //thoi luong film(phut)
-    @Column(name = "begin_date")
 
+    @Column(name = "begin_date")
     private LocalDateTime beginDate;
+
     @Column(name = "language")
     @Enumerated(EnumType.STRING) // Possibly optional (I'm not sure) but defaults to ORDINAL.
     private Language language;
@@ -51,7 +53,7 @@ public class Film {
     @Enumerated(EnumType.STRING) // Possibly optional (I'm not sure) but defaults to ORDINAL.
     private Country country;
 
-    @Column(name = "rate", scale=2)
+    @Column(name = "rate")
     private Double rate;
 
     @Column(name = "sum_rate")

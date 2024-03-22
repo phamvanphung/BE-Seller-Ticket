@@ -1,4 +1,4 @@
-package com.example.ticketsystem.service;
+package com.example.ticketsystem.service.impl;
 
 
 import com.example.ticketsystem.dto.common.response.ApiResponse;
@@ -17,6 +17,7 @@ import com.example.ticketsystem.mail.service.IServiceMail;
 import com.example.ticketsystem.repository.IUserRepository;
 import com.example.ticketsystem.security.bussiness.dto.LoginDto;
 import com.example.ticketsystem.security.jwt.JwtUtilities;
+import com.example.ticketsystem.service.IUserService;
 import com.example.ticketsystem.utils.CommonUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

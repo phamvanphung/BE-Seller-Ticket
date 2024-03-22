@@ -1,6 +1,6 @@
 package com.example.ticketsystem.security.config;
 
-import com.example.ticketsystem.service.CustomerUserDetailsService;
+import com.example.ticketsystem.service.impl.CustomerUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,10 +43,12 @@ public class SpringSecurityConfig {
                         "/user/*/login",
                         "user/*/checkOtp/register",
                             "/film/**",
-                            "/file/**"
+                            "/file/**",
+                            "/voucher/**"
                     ).permitAll()
                     .requestMatchers("/admin/**",
-                            "/film/*/delete/**"
+                            "/film/*/delete/**",
+                            "/voucher/*/delete/**"
                     ).hasAuthority("ADMIN")
                     .requestMatchers("/superadmin/**").hasAuthority("SUPERADMIN")
                     .anyRequest().authenticated()
