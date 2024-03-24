@@ -7,6 +7,7 @@ import com.example.ticketsystem.dto.common.response.StatusResponse;
 import com.example.ticketsystem.dto.film.response.FilmSummaryResponse;
 import com.example.ticketsystem.dto.voucher.request.CreateVoucherRequest;
 import com.example.ticketsystem.dto.voucher.request.GetAllVoucherRequest;
+import com.example.ticketsystem.dto.voucher.request.GiveVoucherRequest;
 import com.example.ticketsystem.dto.voucher.request.UpdateVoucherRequest;
 import com.example.ticketsystem.dto.voucher.response.VoucherResponse;
 import com.example.ticketsystem.enums.ResponseCode;
@@ -59,4 +60,8 @@ public class VoucherController implements IVoucherController {
         return voucherService.deleteVoucher(code, principal.getName());
     }
 
+    @Override
+    public ResponseEntity<ApiResponse<VoucherResponse>> giveVoucher(Principal principal, GiveVoucherRequest request) {
+        return voucherService.giveVoucher(request, principal.getName());
+    }
 }

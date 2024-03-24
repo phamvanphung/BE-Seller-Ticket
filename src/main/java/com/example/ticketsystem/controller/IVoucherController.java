@@ -9,6 +9,7 @@ import com.example.ticketsystem.dto.user.request.UserRegisterRequest;
 import com.example.ticketsystem.dto.user.response.UserResponse;
 import com.example.ticketsystem.dto.voucher.request.CreateVoucherRequest;
 import com.example.ticketsystem.dto.voucher.request.GetAllVoucherRequest;
+import com.example.ticketsystem.dto.voucher.request.GiveVoucherRequest;
 import com.example.ticketsystem.dto.voucher.request.UpdateVoucherRequest;
 import com.example.ticketsystem.dto.voucher.response.VoucherResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,4 +58,8 @@ public interface IVoucherController {
                                                            Principal principal,
                                                            @PathVariable(name = "code", required = true)
                                                            String code);
+
+    @PutMapping("/v1/give")
+    ResponseEntity<ApiResponse<VoucherResponse>> giveVoucher(Principal principal,
+                                                             @RequestBody GiveVoucherRequest request);
 }

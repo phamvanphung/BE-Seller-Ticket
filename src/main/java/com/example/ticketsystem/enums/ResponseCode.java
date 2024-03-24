@@ -29,6 +29,8 @@ public enum ResponseCode {
     WRONG_RATING(200001, "Rating from 1 - 5"),
 
     VOUCHER_NOT_FOUND(300001,"Voucher not found"),
+    VOUCHER_HAS_GIVEN(300002,"Voucher has been given"),
+
     ;
 
     private int code;

@@ -7,6 +7,7 @@ import com.example.ticketsystem.dto.film.response.FilmResponse;
 import com.example.ticketsystem.dto.user.response.UserResponse;
 import com.example.ticketsystem.dto.voucher.request.CreateVoucherRequest;
 import com.example.ticketsystem.dto.voucher.request.GetAllVoucherRequest;
+import com.example.ticketsystem.dto.voucher.request.GiveVoucherRequest;
 import com.example.ticketsystem.dto.voucher.request.UpdateVoucherRequest;
 import com.example.ticketsystem.dto.voucher.response.VoucherResponse;
 import com.example.ticketsystem.entity.Film;
@@ -24,6 +25,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.groovy.runtime.GStringUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -152,6 +154,45 @@ public class VoucherService implements IVoucherService {
             throw e;
         } catch (Exception e) {
             log.error("Have error : {}", e.getLocalizedMessage());
+            throw new BusinessException(ResponseCode.FAILED);
+        }
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<VoucherResponse>> giveVoucher(GiveVoucherRequest request, String email) {
+        try {
+            log.info("email:{}", email);
+            User user = iUserRepository.findByEmail(email).orElseThrow(
+                    () -> {
+                        throw new BusinessException(ResponseCode.USER_NOT_FOUND);
+                    }
+            );
+            if(!user.getRoles().contains(Role.ADMIN)){
+                throw new BusinessException(ResponseCode.USER_DO_NOT_PERMISSION);
+            }
+            User user2 = iUserRepository.findByPhone(request.getPhone()).orElseThrow(
+                    () -> {
+                        throw new BusinessException(ResponseCode.USER_NOT_FOUND);
+                    }
+            );
+            Voucher voucher = iVoucherRepository.findVoucherByCode(request.getVoucherCode()).orElseThrow(
+                    () -> {
+                        throw new BusinessException(ResponseCode.VOUCHER_NOT_FOUND);
+                    }
+            );
+            if(Objects.nonNull(voucher.getUser())){
+                throw new BusinessException(ResponseCode.VOUCHER_HAS_GIVEN);
+            }
+            voucher.setUser(user2);
+            iVoucherRepository.save(voucher);
+
+            // bai toan: 1 voucher cho nhieu user
+
+            return new ResponseEntity<ApiResponse<VoucherResponse>>(new ApiResponse<>(ResponseCode.SUCCESS, new VoucherResponse(voucher)), HttpStatus.OK);
+        }catch (BusinessException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new BusinessException(ResponseCode.FAILED);
         }
     }

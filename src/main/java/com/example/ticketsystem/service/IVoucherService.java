@@ -11,6 +11,7 @@ import com.example.ticketsystem.dto.film.response.FilmResponse;
 import com.example.ticketsystem.dto.film.response.FilmSummaryResponse;
 import com.example.ticketsystem.dto.voucher.request.CreateVoucherRequest;
 import com.example.ticketsystem.dto.voucher.request.GetAllVoucherRequest;
+import com.example.ticketsystem.dto.voucher.request.GiveVoucherRequest;
 import com.example.ticketsystem.dto.voucher.request.UpdateVoucherRequest;
 import com.example.ticketsystem.dto.voucher.response.VoucherResponse;
 import org.springframework.http.ResponseEntity;
@@ -26,5 +27,5 @@ public interface IVoucherService {
 
     ResponseEntity<ApiResponse<StatusResponse>> deleteVoucher(String name, String email);
 
-
+    ResponseEntity<ApiResponse<VoucherResponse>> giveVoucher(GiveVoucherRequest request, String email);
 }

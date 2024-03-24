@@ -13,6 +13,7 @@ public interface IUserRepository extends JpaRepository<User, UUID> , JpaSpecific
 
     Boolean existsByEmail(String email);
     Optional<User> findByEmail(String email);
+    Optional<User> findByPhone(String phone);
     Optional<User> findByEmailAndDeleted(String email, boolean deleted);
 
     Boolean existsByEmailAndDeleted(String email,boolean deleted );
