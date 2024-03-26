@@ -17,4 +17,9 @@ public class CommonUtils {
         Long code = random.nextLong(9999999998L) + 1;
         return String.format("%010d",code);
     }
+
+    public static String getCodeOrder(){
+        Long code = random.nextLong(9999999998L) + 1;
+        return String.format("%010d",code);
+    }
 }

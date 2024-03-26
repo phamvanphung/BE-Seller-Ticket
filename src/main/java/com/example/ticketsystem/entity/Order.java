@@ -1,14 +1,12 @@
 package com.example.ticketsystem.entity;
 
+import com.example.ticketsystem.enums.TimeChieu;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -18,10 +16,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @ToString
 @NoArgsConstructor
-@Table(name = "vouchers")
+@Table(name = "orders")
 @FieldNameConstants
-@Accessors(chain=true)
-public class Voucher implements Serializable {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcType(VarcharJdbcType.class)
@@ -30,22 +27,26 @@ public class Voucher implements Serializable {
     @Column(name = "code")
     private String code;
 
-    @Column(name = "discount")
-    private int discount;
-
-    @Column(name = "create_date")
-    private LocalDateTime createDate;
-
-    @Column(name = "expired_date")
-    private LocalDateTime expiredDate;
-
-    //@ManyToMany(cascade = CascadeType.ALL)
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "used")
-    private boolean used;
+    @Column(name = "film_id")
+    private String filmId;
 
+    @Column(name = "prices")
+    private Long prices;
+
+    @Column(name = "quantity")
+    private int quantity;
+
+    @Column(name = "expired_date")
+    private LocalDateTime expiredDate;
+
+    @Column(name = "time_chieu")
+    private TimeChieu timeChieu;
+
+    @Column(name = "status")
+    private Boolean status;
 
 }

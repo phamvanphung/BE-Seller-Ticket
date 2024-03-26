@@ -2,6 +2,7 @@ package com.example.ticketsystem.dto.voucher.request;
 
 import com.example.ticketsystem.entity.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -21,6 +22,7 @@ public class CreateVoucherRequest {
 
     @NotNull
     @Positive
+    @Max(90)
     private int discount;
 
     @NotNull

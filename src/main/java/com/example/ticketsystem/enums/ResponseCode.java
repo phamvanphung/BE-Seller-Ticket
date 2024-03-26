@@ -31,6 +31,10 @@ public enum ResponseCode {
     VOUCHER_NOT_FOUND(300001,"Voucher not found"),
     VOUCHER_HAS_GIVEN(300002,"Voucher has been given"),
 
+    ORDER_NOT_FOUND(400001,"Voucher not found"),
+
+    TRANSACTION_NOT_FOUND(500001,"Voucher not found"),
+
     ;
 
     private int code;

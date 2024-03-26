@@ -1,7 +1,10 @@
-package com.example.ticketsystem.dto.voucher.request;
+package com.example.ticketsystem.dto.order.request;
 
 import com.example.ticketsystem.entity.User;
-import jakarta.persistence.*;
+import com.example.ticketsystem.enums.TimeChieu;
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,24 +12,26 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
 @ToString
-public class UpdateVoucherRequest {
+public class CreateOrderRequest {
+
     @NotBlank
-    private String code;
+    private String nameFilm;
 
+    @NotNull
     @Positive
-    @Max(90)
-    private int discount;
+    @Max(10)
+    private int quantity;
 
+    @NotNull
     private LocalDateTime expiredDate;
 
-    private String email;
+    @NotNull
+    private TimeChieu timeChieu;
 }
